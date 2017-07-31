@@ -1,0 +1,4 @@
+{"buildings": [
+{ "ID": "1", "Owner": "Joe Bloggs", "Address": "123 Some Street", "BuildingType": "Masonry", "ConstructionDate": "0001-01-01T14:20:00" },
+{ "ID": "2", "Owner": "Sally Smith", "Address": "456 Some Street",  "BuildingType": "High rise", "ConstructionDate": "0001-01-01T05:30:00"  }
+]}

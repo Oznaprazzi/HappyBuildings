@@ -1,0 +1,402 @@
+/*Body*/
+body{
+	margin: 0;
+	padding:0;
+  font-family: "Footlight MT";
+	font-size: 20px;
+	background-image: url("http://imgur.com/ZL7Il0g.png");
+	background-size: cover;
+  background-repeat: no-repeat;
+}
+
+h1{
+  font-family: "Script MT";
+  text-align: center;
+  font-size: 50px;
+}
+
+h2{
+  font-size: 25px;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #f2f2f2;
+}
+
+.table-responsive{
+  border: none;
+}
+
+.table>tbody>tr>td{
+  border-top: none;
+}
+
+table tr td:lastchild{
+  text-align: center;
+}
+
+th, td{
+  padding: 3px;
+}
+
+/*Header*/
+header{
+	background-color: white;
+	width:100%;
+	height: 100px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+
+header .navbar{
+  width: 100%;
+  background-color: white;
+  border: none;
+}
+
+header .container-fluid>.navbar-header{
+  margin: 0;
+}
+
+header .logo{
+  height: 70px;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+header p span{
+  margin: 0;
+  position:relative; 
+  top: 10px;
+  margin-left: 15px;
+}
+
+.navbar-inverse .navbar-collapse{
+  border: none;
+  margin-top: -20px;
+}
+
+.navbar-nav {
+ margin-bottom: 20px; 
+ margin-right: 10px;
+}
+
+/*Menu Icon*/
+.navbar-inverse .navbar-toggle .icon-bar{
+  background-color: black;
+}
+
+.navbar-inverse .navbar-toggle{
+  background-color: white;
+  border: none;
+  margin-top: 35px;
+}
+
+/*Navigation*/
+nav{
+	display: inline-block;
+	float: right;
+}
+
+nav button{
+	padding: 5px;
+	float: right;
+	margin-top: 40px;
+	margin-left: 2px;
+	margin-right: 2px;
+	border: 2px solid #dddddd;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  font-family: "Footlight MT";
+  text-transform: uppercase;
+  transition: background-color 0.5s ease;
+}
+
+nav button:hover{
+  background-color: #d4aad4;
+  border: 2px solid #cc99cc;
+  color: white;
+  transition: all 0.5s ease;
+}
+
+nav button:active{
+  background-color: #b266b2;
+  border: 2px solid  #b266b2;
+  color: white;
+  transition: all 0.5s ease;
+}
+
+/*Main Container*/
+#maincontainer{
+  width: 100%;
+}
+
+/*Main View*/
+.mainView{
+  background:white;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 110px;
+  padding: 30px 15px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+/*Login*/
+#login{
+  background: rgba(255, 255, 255, 0.5);
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 150px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+#login #header{
+  text-align: center;  
+}
+
+#login #header .logo{
+  width: 80%;
+}
+
+/*Container Login*/
+#containerlogin{
+  width: 270px;
+  margin: 0 auto;
+}
+
+#containerlogin form{
+  text-align: right;
+}
+
+#containerlogin #username{
+  margin-top: 20px;
+}
+
+#containerlogin #username select{
+  padding: 4px;
+  width: 175px;
+}
+
+#containerlogin #password input{
+  width: 175px;
+}
+
+#containerlogin #password{
+  margin-top: 10px;
+}
+
+#containerlogin input{
+  border: 2px solid #fffff;
+  text-align: left;
+}
+
+#containerlogin #feedback{
+  text-align: left;
+}
+
+#containerlogin #feedback .feedback{
+  width: 100%;
+  height: 100px;
+}
+
+#containerlogin #feedback #submit{
+  text-align: center;
+}
+
+/*Building Directory */
+#buildingdirectory tr td:lastchild{
+  text-align: center;
+}
+
+#buildingdirectory table tr td:first-child, #buildingdirectory table tr td:last-child{
+  width: 20%;
+}
+
+/*Defines Table Background Logic */
+table tr:first-child{
+  background-color: #ccccff;
+}
+
+table tr:nth-child(2n+3) {
+  background-color: #e6e6e6;
+  transition: all 0.5s ease;
+}
+
+table tr:nth-child(even) {
+  background-color: white;
+  transition: all 0.5s ease;
+}
+
+table tr:not(:first-child):hover{
+  background-color: #b3b3ff;
+  transition: all 0.5s ease;
+}
+
+/*Building Information Div*/
+#buildinginformation h2, #projectinformation #projectdetails h2{
+  display: inline-block;
+}
+
+#buildinginformation textarea, #projectinformation #projectdetails textarea{
+  vertical-align: middle;
+}
+
+#buildinginformation #buildingtype #constructiondate{
+  width: 40%;
+  font-size: 16px;
+  height: 30px;
+}
+
+#buildinginformation .italic, #projectdetails .italic{
+  font-style: italic;
+  font-size: 20px;
+}
+
+#buildinginformation table tr td:nth-last-child(-n+3){
+  width: 8%;
+}
+
+/*Project Details*/
+.table, .table tr td{
+  border-width: 0;  
+}
+
+.table tr:last-child:hover{
+  background-color: white;
+}
+
+.table tr:first-child{
+    background-color: transparent;
+}
+
+.table tr:nth-child(2n+3) {
+    background-color: transparent;
+}
+
+.table tr:nth-child(even) {
+    background-color: transparent;
+}
+
+.table select{
+  font-size: 20px;
+  padding: 4px;
+}
+
+#projectdetails .works{
+  margin-top: 30px;
+}
+
+/*Comments Section*/
+#commenttable{
+  margin-top: 50px;
+}
+
+#commenttable tr:nth-child(2){
+  background-color: #ccccff;
+}
+
+.comments tr td{
+  width: 60px;
+  text-align: center;
+}
+
+.comments tr td:last-child{
+  width: 20%;
+}
+
+/*Add Works Section - for editing or creating a new project*/
+#projectdetails .editW tr:last-child:hover{
+  background-color: inherit;
+}
+
+#projectdetails .editW tr:last-child td:not(:last-child){
+  padding-left: 2px;
+  padding-right: 6px;
+}
+
+#projectdetails .editW tr:last-child td:last-child{
+  width: 120px;
+}
+
+#projectdetails .editW .addW{
+  width: 100%;
+}
+
+#projectdetails .editW select{
+  padding: 3px;
+}
+
+/*Button*/
+ .button{
+  text-transform: uppercase;
+  text-decoration: none;
+	background-color: #f2f2f2;
+	border: 2px solid #f2f2f2;
+	font-family: "Footlight MT";
+	transition: all 0.5s ease;
+}
+
+.button:hover{
+  border: 2px solid #6699e1;
+  color: #6699e1;
+  transition: all 0.5s ease;
+}
+
+.button:active{
+  border: 2px solid #1d4f95;
+  color: #1d4f95;
+  transition: all 0.5s ease;
+}
+
+#loginbtn{
+  margin-top: 20px;
+  text-align: right;
+}
+
+#ctrbtn{
+  width: 100%;
+  text-align: center;
+}
+
+/*Text Area*/
+
+/*Contains logic regarding textarea width, font, and font size */
+textarea{
+  font-family: "Footlight MT";
+  width: 35%;
+  height: 30px;
+  resize: none;
+}
+
+input{
+  font-family: "Footlight MT";
+}
+
+button, input, select, textarea{
+  font-size: 16px;
+}
+
+#projectcomment{
+  width: 55%;
+  height: 120px;
+}
+
+/*Media*/
+@media (max-width: 483px){
+  header p span{
+    display: block;
+  }
+}
+
+
+

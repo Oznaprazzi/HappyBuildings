@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+
+  <head>
+     <!--BOOTSTRAP -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <meta charset="utf-8" />
+    <title>Happy Buildings</title>
+    <link rel="stylesheet" href="style.css" />
+    <script data-require="angular.js@1.4.x" src="https://code.angularjs.org/1.4.12/angular.js" data-semver="1.4.9"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="MainCtrl" ng-init="loadProj()">
+    <header ng-show="nav">
+      <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>                        
+            </button>
+            <p><img class="logo" src="http://imgur.com/WTV3aKy.png" />
+                <span>Hi there, {{currentUser.LoginName}}</span></p>
+          </div>
+          <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+              <li><button ng-click="back()" ng-show="isBackOn(1)">Back</button></li>
+              <li><button ng-click="bd()" ng-show="isBdOn(1)">Building Directory</button></li>
+              <li><button ng-click="archivedProjects()" ng-show="isBdOn(2)">Archived Projects</button></li>
+              <li><button ng-click="logout()">Log out</button></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+    </header>
+    <div id="maincontainer">
+      <div id="login" ng-show="isView(1)">
+        <div id="header">
+          <img class="logo" src="http://imgur.com/WTV3aKy.png" />
+        </div>
+        <!--Container Login DIV -->
+        <div id="containerlogin">
+          <h1>Log In</h1>
+          <form>
+            <div id="username">
+              <label>Username</label>
+              <select ng-model="username">
+                <option ng-repeat="login	in	users">{{login.LoginName}}</option>
+              </select>
+            </div>
+            <div id="password">
+              <label>Password</label>
+              <input type="password" id="password" name="password" ng-model="password" />
+            </div>
+            <div id="loginbtn">
+              <button class="button" ng-click="verifyLogin()">Log in</button>
+              <button class="button" ng-click="cancelLogin()">Cancel</button>
+            </div>
+          </form>
+          <p ng-bind="print"></p>
+        </div>
+      </div>
+      <!--Building Directory DIV -->
+      <div id="buildingdirectory" class="mainView" ng-show="isView(2)">
+        <h1>Building Directory</h1>
+        <div class="table-responsive">
+          <!--Code which defines the Building Table, may need to change later -->
+          <table>
+            <tbody>
+              <tr>
+                <th>Building ID</th>
+                <th>Owner</th>
+                <th>Address</th>
+                <th>Building Type</th>
+                <th>Construction Date</th>
+                <th>Show</th>
+              </tr>
+              <tr ng-repeat="id in buildings">
+                <td>{{id.ID}}</td>
+                <td>{{id.Owner}}</td>
+                <td>{{id.Address}}</td>
+                <td>{{id.BuildingType}}</td>
+                <td>{{id.ConstructionDate | date: "yyyy-MM-ddTHH:mm:ss"}}</td>
+                <td>
+                  <div id="ctrbtn">
+                    <button class="button" ng-click="viewInfo($index)">View</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button class="button" ng-click="editBuildingInfo(false)" ng-show="isManager()">Add Building</button>
+      </div>
+      <div id="buildinginformation" class="mainView" ng-show="isView(3)">
+        <h1>Building Information</h1>
+        <h2>Type of Building:</h2>
+        <textarea class="italic" readonly="">{{selectedBldg.BuildingType}}</textarea>
+        <br />
+        <h2>Date of Construction:</h2>
+        <textarea class="italic" readonly="">{{selectedBldg.ConstructionDate | date: "yyyy-MM-ddTHH:mm:ss"}}</textarea>
+        <br />
+        <button class="button" ng-click="editBuildingInfo(true)" ng-show="isManager()">Edit Building</button>
+        <br />
+        <h2>Projects:</h2>
+        <div class="table-responsive">
+          <!--Code which defines the Building Table, may need to change later -->
+          <table>
+            <tbody>
+              <tr>
+                <th>Project Name</th>
+                <th>Status</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>ContactPerson</th>
+                <th>ProjectManager</th>
+                <th>Contractor</th>
+                <th>Show</th>
+                <th>Delete</th>
+                <th>Archive Project</th>
+              </tr>
+              <tr ng-repeat="project in bldgprojects">
+                <td>{{project.Name}}</td>
+                <td>{{project.Status}}</td>
+                <td>{{project.StartDate | date: "yyyy-MM-ddTHH:mm:ss"}}</td>
+                <td>{{project.EndDate | date: "yyyy-MM-ddTHH:mm:ss"}}</td>
+                <td>{{project.ContactPerson}}</td>
+                <td>{{project.ProjectManager}}</td>
+                <td>{{project.Contractor}}</td>
+                <td>
+                  <div id="ctrbtn">
+                    <button class="button" ng-click="viewDetails($index)">View</button>
+                  </div>
+                </td>
+                <td>
+                  <div id="ctrbtn">
+                    <button class="button" ng-click="deleteProj(project)" ng-show="isManager()">Delete</button>
+                  </div>
+                </td>
+                <td>
+                  <div id="ctrbtn">
+                    <button class="button" ng-click="archiveProj(project)" ng-show="isManager()">Archive</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>{{printMessage("projects")}}</p>
+        <button class="button" ng-click="edit(true)" ng-show="isManager()">Add New Project</button>
+      </div>
+      <div id="projectinformation" class="mainView" ng-show="isView(4)">
+        <div id="projectdetails">
+          <h1>Project Details</h1>
+          <h2>Project Name:</h2>
+          <textarea class="italic" readonly="">{{selectedProj.Name}}</textarea>
+          <br>
+          
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>
+                    <h2>Start Date:</h2>
+                    <textarea class="italic" readonly="">{{selectedProj.StartDate | date: "yyyy-MM-ddTHH:mm:ss"}}</textarea>
+                  </td>
+                  <td>
+                    <h2>End Date:</h2>
+                    <textarea class="italic" readonly="">{{selectedProj.EndDate | date: "yyyy-MM-ddTHH:mm:ss"}}</textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h2>Project Manager:</h2>
+                    <textarea class="italic" readonly="">{{selectedProj.ProjectManager}}</textarea>
+                  </td>
+                  <td>
+                    <h2>Contact Person:</h2>
+                    <textarea class="italic" readonly="">{{selectedProj.ContactPerson}}</textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <h2>Contractor:</h2>
+          <textarea class="italic">{{selectedProj.Contractor}}</textarea>
+          <br>
+          
+          <div class="table-responsive">
+            <!-- Table for the Project Checkbox-->
+            <table class="works">
+              <tbody>
+                <tr>
+                  <th>Type of Work</th>
+                  <th>Status</th>
+                </tr>
+                <tr ng-repeat="works in selectedProj.Works">
+                  <td>{{works.TypeOfWork}}</td>
+                  <td>{{works.Status}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <p>{{printMessage("works")}}</p>
+          <div id="projectdetailsbutton">
+            <button class="button" ng-click="edit(false)" ng-show="isManager()">Edit</button>
+          </div>
+          <!-- <button class="button" ng-click="">Add Project</button> -->
+          <!--Here are the tables for the various contractors. -->
+          <div id="commenttable">
+            <div class="table-responsive">
+              <table id="generalcomments" class="comments">
+                <tbody>
+                  <tr>
+                    <td colspan="3">General Comments</td>
+                  </tr>
+                  <tr>
+                    <th>Author</th>
+                    <th>Comment</th>
+                    <th>Delete Comment</th>
+                  </tr>
+                  <tr ng-repeat="comment in selectedProj.Comments">
+                    <td>{{comment.Author}}</td>
+                    <td>{{comment.Text}}</td>
+                    <td>
+                      <button class="button" ng-click="deleteComment($index)" ng-show="isManager()">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>{{printMessage("comments")}}</p>
+          </div>
+        </div>
+        <!-- Text Box for typing and submitting comments -->
+        <h2>Enter a Comment:</h2>
+        <textarea id="projectcomment" ng-model="projectcomment"></textarea>
+        <div id="commentbuttons">
+          <button class="button" ng-click="addComment()">Add</button>
+          <button class="button" ng-click="cancelcomment()">Cancel Comment</button>
+        </div>
+      </div>
+      <div id="projectinformation" class="mainView" ng-show="isView(6)">
+        <div id="projectdetails">
+          <h1>Project Details</h1>
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>
+                    <h2>Project Name:</h2><br>
+                    <input class="italic" ng-model="projName" />
+                  </td>
+                  <td>
+                    <h2>Status:</h2><br>
+                    <select ng-model="projStatus" ng-options="options for options in projectstatus" ng-init="projStatus=projectstatus[1]"></select>
+                  </td>
+                  <td>
+                    <h2>Start Date:</h2><br>
+                    <input class="italic" type="datetime-local" ng-model="projStrtDate" />
+                  </td>
+                  <td>
+                    <h2>End Date:</h2><br>
+                    <input class="italic" type="datetime-local" ng-model="projEndDate" />
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <h2>Project Manager:</h2><br>
+                    <input class="italic" ng-model="projManager" />
+                  </td>
+                  <td>
+                    <h2>Contact Person:</h2><br>
+                    <input class="italic" ng-model="projPerson" />
+                  </td>
+                  <td>
+                    <h2>Contractor:</h2><br>
+                    <input class="italic" ng-model="projContractor" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="table-responsive">
+            <!-- Table for the Project Checkbox-->
+            <table class="works editW">
+              <tbody>
+                <tr>
+                  <th>Type of Work</th>
+                  <th>Status</th>
+                </tr>
+                <tr ng-repeat="work in works">
+                  <td>{{work.TypeOfWork}}</td>
+                  <td>{{work.Status}}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input class="addW" ng-model="typeOfWork" />
+                  </td>
+                  <td>
+                    <select ng-model="workStatus">
+                      <option ng-repeat="options in projectstatus">{{options}}</option>
+                    </select>
+                  </td>
+                  <td>
+                    <div id="ctrbtn">
+                      <button class="button" ng-click="addWorks()">Add Work</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div id="projectdetailsbutton">
+            <button class="button" ng-click="save()">Save</button>
+            <button class="button" ng-click="cancelProj()">Cancel</button>
+          </div>
+        </div>
+      </div>
+      
+      <div id="archivedProjects" class="mainView" ng-show="isView(5)">
+        <h1> List of Archived Projects</h1>
+        
+        <div class="table-responsive">
+          <table>
+            <tbody>
+              <tr>
+                <th>Building ID</th>
+                <th>Name</th>
+                <th>Project Manager</th>
+                <th>Status</th>
+                <th>Delete</th>
+                <th>Unarchive</th>
+              </tr>
+              <tr ng-repeat="project in archdprojects">
+                <td>{{project.BuildingID}}</td>
+                <td>{{project.Name}}</td>
+                <td>{{project.ProjectManager}}</td>
+                <td>{{project.Status}}</td>
+                <td>
+                  <div id="ctrbtn">
+                    <button class="button" ng-show="isManager()" ng-click="deleteProj(project)">Delete</button>
+                  </div>
+                </td>
+                <td>
+                  <div id="ctrbtn">
+                    <button class="button" ng-show="isManager()" ng-click="unarchiveProj(project)">Unarchive</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <p>{{printMessage("archives")}}</p>
+      </div>
+      
+      <div id="buildinginformation" class="mainView" ng-show="isView(7)">
+        <h1>Editing Building Information</h1>
+        <p>Note: You are currently editing the following Building: </p>
+        
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td>
+                  <h2>Building Type:</h2>
+                  <input class="italic" ng-model="buildingType" />
+                </td>
+                <td>
+                  <h2>Construction Date:</h2>
+                  <input class="italic" type="datetime-local" ng-model="constructionDate" />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h2>Owner:</h2>
+                  <input class="italic" ng-model="owner" />
+                </td>
+                <td>
+                  <h2>Address:</h2>
+                  <input class="italic" ng-model="address" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <button class="button" ng-click="saveBuildingInfo()">Save</button>
+        <button class="button" ng-click="cancelBuildingInfo()">Cancel</button>
+      </div>
+    </div>
+  </body>
+
+</html>
